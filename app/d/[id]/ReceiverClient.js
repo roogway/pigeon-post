@@ -157,40 +157,40 @@ function AboutModal({ onClose }) {
       >
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors text-lg"
         >
           ✕
         </button>
         
-        <h2 className="text-xl font-bold mb-4 font-pixel">About Pigeon Post</h2>
+        <h2 className="text-2xl font-bold mb-4 font-pixel">About Pigeon Post</h2>
         
-        <p className="text-gray-600 text-sm mb-4">
+        <p className="text-gray-600 text-base mb-4">
           Send tiny pixel gifts to your friends via carrier pigeon. A small, delightful ritual.
         </p>
         
         <div className="border-t pt-4">
-          <h3 className="font-bold text-sm mb-2">Credits</h3>
-          <ul className="text-xs text-gray-500 space-y-1">
+          <h3 className="font-bold text-base mb-2">Credits</h3>
+          <ul className="text-sm text-gray-500 space-y-1">
             <li>Design and concept by Raghvi</li>
             <li>Illustrations from Adobe Stock</li>
           </ul>
         </div>
         
         <div className="border-t mt-4 pt-4">
-          <p className="text-xs text-gray-400 text-center mb-3">
+          <p className="text-sm text-gray-400 text-center mb-3">
             Tip: Add to Home Screen for the best experience ✨
           </p>
         </div>
         
         <div className="border-t mt-4 pt-4">
-          <p className="text-sm text-gray-600 text-center mb-3">
+          <p className="text-base text-gray-600 text-center mb-3">
             This pigeon runs on coffee ☕
           </p>
           <a
             href="https://buymeacoffee.com/raghvikabra"
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full py-2.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-medium rounded-xl text-center transition-all text-sm"
+            className="block w-full py-2.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-medium rounded-xl text-center transition-all text-base"
           >
             Buy me a coffee
           </a>
@@ -268,36 +268,36 @@ export default function ReceiverClient({ delivery }) {
       <FloatingClouds />
       <Confetti active={showConfetti} />
       
-      {/* Header with About button */}
+      {/* Header with clickable Pigeon Post and About button */}
       <header className="absolute top-0 left-0 right-0 z-40 flex justify-between items-center px-4 py-3">
-        <h1 className="text-xl text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
+        <a href="/" className="text-xl text-white font-bold font-pixel hover:opacity-80 transition-opacity" style={{ textShadow: "2px 2px 0 #000" }}>
           Pigeon Post
-        </h1>
+        </a>
         <button 
           onClick={() => setShowAbout(true)}
-          className="text-white text-sm hover:opacity-80 transition-opacity"
+          className="text-white text-base hover:opacity-80 transition-opacity"
           style={{ textShadow: "1px 1px 0 #000" }}
         >
           About
         </button>
       </header>
       
-      {/* Footer - two columns */}
-      <footer className="absolute bottom-0 left-0 right-0 z-40 py-2 px-4 flex justify-between items-end">
+      {/* Footer - centered, stacked, pushed up */}
+      <footer className="absolute bottom-0 left-0 right-0 z-40 pb-6 pt-2 px-4 flex flex-col items-center">
         <a 
           href="https://buymeacoffee.com/raghvikabra"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-white/70 text-xs hover:text-white transition-colors"
+          className="text-white text-sm hover:text-white/90 transition-colors underline"
           style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
         >
           This pigeon runs on coffee ☕
         </a>
         <span 
-          className="text-white/70 text-xs"
+          className="text-white/70 text-sm mt-1"
           style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
         >
-          Made by Roogway 🛸
+          Made by Raghvi
         </span>
       </footer>
 
