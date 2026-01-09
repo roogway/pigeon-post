@@ -97,7 +97,8 @@ function AboutModal({ onClose }) {
         <div className="border-t pt-4">
           <h3 className="font-bold text-sm mb-2">Credits</h3>
           <ul className="text-xs text-gray-500 space-y-1">
-            <li>Illustrations & Design — Raghvi</li>
+            <li>Design and concept by Raghvi</li>
+            <li>Illustrations from Adobe Stock</li>
           </ul>
         </div>
         
@@ -253,30 +254,24 @@ export default function Home() {
       
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-40 py-2 text-center">
-        <a 
-          href="https://raghvi.co" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-white/70 text-xs hover:text-white transition-colors"
+        <span 
+          className="text-white/70 text-xs"
           style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
         >
-          Made with love by Raghvi
-        </a>
+          Made by Roogway 👾
+        </span>
       </footer>
-
-      {/* Title */}
-      <div className="absolute top-16 left-0 right-0 z-20 text-center">
-        <h1 
-          className="text-3xl md:text-4xl text-white font-bold"
-          style={{ textShadow: "3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000" }}
-        >
-          pigeon post
-        </h1>
-      </div>
 
       {/* Main Card */}
       <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl p-5 w-full max-w-sm shadow-2xl">
+          {/* Card Title */}
+          <h2 
+            className="text-xl font-bold text-center mb-4 text-gray-800"
+          >
+            Send a little something
+          </h2>
+          
           {/* Recipient */}
           <div className="mb-4">
             <label className="block text-sm text-gray-500 mb-1">For</label>
