@@ -14,6 +14,7 @@ const balsamiq = Balsamiq_Sans({
 })
 
 export const metadata = {
+  metadataBase: new URL('https://pigeon-post-omega.vercel.app'),
   title: 'Pigeon Post',
   description: 'Send tiny pixel gifts to your friends via carrier pigeon',
   manifest: '/manifest.json',
@@ -21,14 +22,17 @@ export const metadata = {
   openGraph: {
     title: 'Pigeon Post',
     description: 'Someone sent you a pixel gift via carrier pigeon! 🐦',
+    url: 'https://pigeon-post-omega.vercel.app',
+    siteName: 'Pigeon Post',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Pigeon Post',
+        alt: 'Pigeon Post - Send pixel gifts via carrier pigeon',
       },
     ],
+    locale: 'en_US',
     type: 'website',
   },
   twitter: {
