@@ -268,7 +268,7 @@ export default function ReceiverClient({ delivery }) {
       <FloatingClouds />
       <Confetti active={showConfetti} />
       
-      {/* Header with clickable Pigeon Post and About button */}
+      {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-40 flex justify-between items-center px-4 py-3">
         <a href="/" className="text-xl text-white font-bold font-pixel hover:opacity-80 transition-opacity" style={{ textShadow: "2px 2px 0 #000" }}>
           Pigeon Post
@@ -282,7 +282,7 @@ export default function ReceiverClient({ delivery }) {
         </button>
       </header>
       
-      {/* Footer - centered, stacked, pushed up */}
+      {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-40 pb-6 pt-2 px-4 flex flex-col items-center">
         <a 
           href="https://buymeacoffee.com/raghvikabra"
@@ -310,7 +310,7 @@ export default function ReceiverClient({ delivery }) {
             {stage === "hovering" && "Special delivery"}
             {stage === "departed" && "..."}
             {stage === "ready" && !mailboxOpen && "Tap the mailbox"}
-            {mailboxOpen && `For ${delivery.recipientName}`}
+            {mailboxOpen && ""}
           </p>
         </div>
       </div>
@@ -360,8 +360,8 @@ export default function ReceiverClient({ delivery }) {
         />
       )}
 
-      {/* Mailbox - pushed up more */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "16%" }}>
+      {/* Mailbox - positioned at ground line */}
+      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "28%" }}>
         <div 
           onClick={handleMailboxClick}
           className={`transition-all duration-200 ${stage === "ready" && !mailboxOpen ? "cursor-pointer" : ""}`}
@@ -374,24 +374,29 @@ export default function ReceiverClient({ delivery }) {
             src={mailboxOpen ? MAILBOX_OPEN : MAILBOX_CLOSED}
             alt="Mailbox"
             className="object-contain object-bottom md:hidden"
-            style={{ imageRendering: "pixelated", height: "240px" }}
+            style={{ imageRendering: "pixelated", height: "200px" }}
           />
           <img 
             src={mailboxOpen ? MAILBOX_OPEN : MAILBOX_CLOSED}
             alt="Mailbox"
             className="hidden md:block object-contain object-bottom"
-            style={{ imageRendering: "pixelated", height: "380px" }}
+            style={{ imageRendering: "pixelated", height: "320px" }}
           />
         </div>
       </div>
 
-      {/* Reveal Card */}
+      {/* Reveal Card - with recipient name */}
       {mailboxOpen && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
           <div 
             className="bg-white rounded-2xl p-5 w-full max-w-sm shadow-2xl"
             style={{ animation: "revealPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)" }}
           >
+            {/* Recipient name at top */}
+            <h3 className="text-center text-lg font-bold text-gray-800 mb-3 font-pixel">
+              For {delivery.recipientName}
+            </h3>
+            
             <div className="flex flex-col items-center mb-4">
               <div 
                 className="relative w-32 h-32 mb-3 flex items-center justify-center"
@@ -430,7 +435,7 @@ export default function ReceiverClient({ delivery }) {
         @keyframes floatCloud1 { 0% { left: -200px; } 100% { left: 100vw; } }
         @keyframes floatCloud2 { 0% { left: -150px; } 100% { left: 100vw; } }
         @keyframes floatCloud3 { 0% { left: -100px; } 100% { left: 100vw; } }
-        @keyframes dropScroll { 0% { top: 38%; opacity: 1; } 100% { top: 52%; opacity: 0; } }
+        @keyframes dropScroll { 0% { top: 38%; opacity: 1; } 100% { top: 48%; opacity: 0; } }
         @keyframes mailboxWobble { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
         @keyframes mailboxPulse { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.02); filter: brightness(1.1); } }
         @keyframes revealPop { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
