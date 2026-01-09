@@ -285,34 +285,34 @@ export default function Home() {
         </span>
       </footer>
 
-      {/* Main Card */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
-        <div className="bg-white rounded-2xl p-5 w-full max-w-sm shadow-2xl">
+      {/* Main Card - with bottom margin for footer space */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center px-4 pb-20">
+        <div className="bg-white rounded-2xl p-4 w-full max-w-sm shadow-2xl">
           {/* Card Title */}
-          <h2 className="text-xl font-bold text-center mb-4 text-gray-800 font-pixel">
+          <h2 className="text-lg font-bold text-center mb-3 text-gray-800 font-pixel">
             Send a little something
           </h2>
           
           {/* Recipient */}
-          <div className="mb-4">
+          <div className="mb-3">
             <label className="block text-sm text-gray-500 mb-1">For</label>
             <input
               type="text"
               value={recipientName}
               onChange={(e) => setRecipientName(e.target.value)}
               placeholder="Friend's name"
-              className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none transition-colors"
+              className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none transition-colors text-sm"
             />
           </div>
 
           {/* Item Grid - 4x3 */}
-          <div className="mb-4">
-            <div className="grid grid-cols-4 gap-2">
+          <div className="mb-3">
+            <div className="grid grid-cols-4 gap-1.5">
               {ITEMS.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => setSelectedItem(item)}
-                  className={`aspect-square rounded-xl p-1.5 transition-all duration-150 ${
+                  className={`aspect-square rounded-lg p-1 transition-all duration-150 ${
                     selectedItem?.id === item.id
                       ? "bg-orange-100 ring-2 ring-orange-400 scale-110 shadow-lg"
                       : "bg-gray-50 hover:bg-gray-100 hover:scale-105"
@@ -328,20 +328,20 @@ export default function Home() {
               ))}
             </div>
             
-            <p className="text-center text-sm text-gray-500 mt-3 h-5 font-medium">
+            <p className="text-center text-sm text-gray-500 mt-2 h-5 font-medium">
               {selectedItem ? selectedItem.name : ""}
             </p>
           </div>
 
           {/* Note */}
-          <div className="mb-4">
+          <div className="mb-3">
             <label className="block text-sm text-gray-400 mb-1">Add a note (optional)</label>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="..."
               rows={2}
-              className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none resize-none text-sm transition-colors"
+              className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none resize-none text-sm transition-colors"
             />
           </div>
 
