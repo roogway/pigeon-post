@@ -7,7 +7,12 @@
 }
 
 body {
-  font-family: var(--font-pixelify), 'Pixelify Sans', system-ui, sans-serif;
+  font-family: var(--font-nunito), 'Nunito', system-ui, sans-serif;
   margin: 0;
   padding: 0;
+}
+
+/* Utility class for pixel font headers */
+.font-pixel {
+  font-family: var(--font-pixelify), 'Pixelify Sans', monospace;
 }
