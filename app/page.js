@@ -88,7 +88,7 @@ function AboutModal({ onClose }) {
           ✕
         </button>
         
-        <h2 className="text-xl font-bold mb-4">About Pigeon Post</h2>
+        <h2 className="text-xl font-bold mb-4 font-pixel">About Pigeon Post</h2>
         
         <p className="text-gray-600 text-sm mb-4">
           Send tiny pixel gifts to your friends via carrier pigeon. A small, delightful ritual.
@@ -103,9 +103,23 @@ function AboutModal({ onClose }) {
         </div>
         
         <div className="border-t mt-4 pt-4">
-          <p className="text-xs text-gray-400 text-center">
+          <p className="text-xs text-gray-400 text-center mb-3">
             Tip: Add to Home Screen for the best experience ✨
           </p>
+        </div>
+        
+        <div className="border-t mt-4 pt-4">
+          <p className="text-sm text-gray-600 text-center mb-3">
+            This pigeon runs on coffee ☕
+          </p>
+          <a
+            href="https://buymeacoffee.com/raghvikabra"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full py-2.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-medium rounded-xl text-center transition-all text-sm"
+          >
+            Buy me a coffee
+          </a>
         </div>
       </div>
     </div>
@@ -149,7 +163,7 @@ function ShareModal({ link, onClose }) {
           ✕
         </button>
         
-        <h2 className="text-xl font-bold mb-2 text-center">🐦 Ready to send!</h2>
+        <h2 className="text-xl font-bold mb-2 text-center font-pixel">🐦 Ready to send!</h2>
         <p className="text-gray-500 text-sm mb-4 text-center">Share this link with your friend</p>
         
         <div className="bg-gray-100 p-3 rounded-xl mb-4 break-all text-sm text-gray-700">
@@ -240,7 +254,7 @@ export default function Home() {
 
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-40 flex justify-between items-center px-4 py-3">
-        <h1 className="text-xl text-white font-bold" style={{ textShadow: "2px 2px 0 #000" }}>
+        <h1 className="text-xl text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
           Pigeon Post
         </h1>
         <button 
@@ -252,13 +266,22 @@ export default function Home() {
         </button>
       </header>
       
-      {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 z-40 py-2 text-center">
+      {/* Footer - two columns */}
+      <footer className="absolute bottom-0 left-0 right-0 z-40 py-2 px-4 flex justify-between items-end">
+        <a 
+          href="https://buymeacoffee.com/raghvikabra"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white/70 text-xs hover:text-white transition-colors"
+          style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
+        >
+          This pigeon runs on coffee ☕
+        </a>
         <span 
           className="text-white/70 text-xs"
           style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
         >
-          Made by Roogway 👾
+          Made by Roogway 🛸
         </span>
       </footer>
 
@@ -266,9 +289,7 @@ export default function Home() {
       <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl p-5 w-full max-w-sm shadow-2xl">
           {/* Card Title */}
-          <h2 
-            className="text-xl font-bold text-center mb-4 text-gray-800"
-          >
+          <h2 className="text-xl font-bold text-center mb-4 text-gray-800 font-pixel">
             Send a little something
           </h2>
           
@@ -284,9 +305,9 @@ export default function Home() {
             />
           </div>
 
-          {/* Item Grid */}
+          {/* Item Grid - 4x3 */}
           <div className="mb-4">
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {ITEMS.map((item) => (
                 <button
                   key={item.id}
