@@ -281,7 +281,7 @@ export default function Home() {
           className="text-white/70 text-sm mt-1"
           style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
         >
-          Made by Raghvi
+          Made by <a href="https://www.raghvikabra.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">Raghvi</a>
         </span>
       </footer>
 
