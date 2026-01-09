@@ -147,6 +147,59 @@ const Pigeon = ({ frame, carrying }) => {
   )
 }
 
+function AboutModal({ onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div 
+        className="relative bg-white rounded-2xl p-6 max-w-sm w-full max-h-[80vh] overflow-y-auto"
+        style={{ animation: "modalPop 0.2s ease-out" }}
+      >
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          ✕
+        </button>
+        
+        <h2 className="text-xl font-bold mb-4 font-pixel">About Pigeon Post</h2>
+        
+        <p className="text-gray-600 text-sm mb-4">
+          Send tiny pixel gifts to your friends via carrier pigeon. A small, delightful ritual.
+        </p>
+        
+        <div className="border-t pt-4">
+          <h3 className="font-bold text-sm mb-2">Credits</h3>
+          <ul className="text-xs text-gray-500 space-y-1">
+            <li>Design and concept by Raghvi</li>
+            <li>Illustrations from Adobe Stock</li>
+          </ul>
+        </div>
+        
+        <div className="border-t mt-4 pt-4">
+          <p className="text-xs text-gray-400 text-center mb-3">
+            Tip: Add to Home Screen for the best experience ✨
+          </p>
+        </div>
+        
+        <div className="border-t mt-4 pt-4">
+          <p className="text-sm text-gray-600 text-center mb-3">
+            This pigeon runs on coffee ☕
+          </p>
+          <a
+            href="https://buymeacoffee.com/raghvikabra"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full py-2.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-medium rounded-xl text-center transition-all text-sm"
+          >
+            Buy me a coffee
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function ReceiverClient({ delivery }) {
   const [stage, setStage] = useState("waiting")
   const [mailboxOpen, setMailboxOpen] = useState(false)
@@ -156,6 +209,7 @@ export default function ReceiverClient({ delivery }) {
   const [showDroppedScroll, setShowDroppedScroll] = useState(false)
   const [mailboxWobble, setMailboxWobble] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
+  const [showAbout, setShowAbout] = useState(false)
 
   useEffect(() => {
     if (["arriving", "departed"].includes(stage)) {
@@ -214,20 +268,36 @@ export default function ReceiverClient({ delivery }) {
       <FloatingClouds />
       <Confetti active={showConfetti} />
       
-      {/* Header */}
+      {/* Header with About button */}
       <header className="absolute top-0 left-0 right-0 z-40 flex justify-between items-center px-4 py-3">
-        <h1 className="text-xl text-white font-bold" style={{ textShadow: "2px 2px 0 #000" }}>
+        <h1 className="text-xl text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
           Pigeon Post
         </h1>
+        <button 
+          onClick={() => setShowAbout(true)}
+          className="text-white text-sm hover:opacity-80 transition-opacity"
+          style={{ textShadow: "1px 1px 0 #000" }}
+        >
+          About
+        </button>
       </header>
       
-      {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 z-40 py-2 text-center">
+      {/* Footer - two columns */}
+      <footer className="absolute bottom-0 left-0 right-0 z-40 py-2 px-4 flex justify-between items-end">
+        <a 
+          href="https://buymeacoffee.com/raghvikabra"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white/70 text-xs hover:text-white transition-colors"
+          style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
+        >
+          This pigeon runs on coffee ☕
+        </a>
         <span 
           className="text-white/70 text-xs"
           style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
         >
-          Made by Roogway 👾
+          Made by Roogway 🛸
         </span>
       </footer>
 
@@ -290,8 +360,8 @@ export default function ReceiverClient({ delivery }) {
         />
       )}
 
-      {/* Mailbox */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "12%" }}>
+      {/* Mailbox - pushed up more */}
+      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "16%" }}>
         <div 
           onClick={handleMailboxClick}
           className={`transition-all duration-200 ${stage === "ready" && !mailboxOpen ? "cursor-pointer" : ""}`}
@@ -353,16 +423,20 @@ export default function ReceiverClient({ delivery }) {
         </div>
       )}
 
+      {/* About Modal */}
+      {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
+
       <style jsx global>{`
         @keyframes floatCloud1 { 0% { left: -200px; } 100% { left: 100vw; } }
         @keyframes floatCloud2 { 0% { left: -150px; } 100% { left: 100vw; } }
         @keyframes floatCloud3 { 0% { left: -100px; } 100% { left: 100vw; } }
-        @keyframes dropScroll { 0% { top: 38%; opacity: 1; } 100% { top: 55%; opacity: 0; } }
+        @keyframes dropScroll { 0% { top: 38%; opacity: 1; } 100% { top: 52%; opacity: 0; } }
         @keyframes mailboxWobble { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
         @keyframes mailboxPulse { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.02); filter: brightness(1.1); } }
         @keyframes revealPop { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes itemFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
         @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
       `}</style>
     </div>
   )
