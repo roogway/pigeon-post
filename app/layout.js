@@ -1,5 +1,5 @@
 import './globals.css'
-import { Pixelify_Sans, Nunito } from 'next/font/google'
+import { Pixelify_Sans, Balsamiq_Sans } from 'next/font/google'
 
 const pixelify = Pixelify_Sans({ 
   subsets: ['latin'],
@@ -7,10 +7,10 @@ const pixelify = Pixelify_Sans({
   variable: '--font-pixelify',
 })
 
-const nunito = Nunito({
+const balsamiq = Balsamiq_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-nunito',
+  weight: ['400', '700'],
+  variable: '--font-balsamiq',
 })
 
 export const metadata = {
@@ -47,14 +47,14 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${pixelify.variable} ${nunito.variable}`}>
+    <html lang="en" className={`${pixelify.variable} ${balsamiq.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className={nunito.className}>{children}</body>
+      <body className={balsamiq.className}>{children}</body>
     </html>
   )
 }
