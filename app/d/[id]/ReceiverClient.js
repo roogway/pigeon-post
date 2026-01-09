@@ -297,7 +297,7 @@ export default function ReceiverClient({ delivery }) {
           className="text-white/70 text-sm mt-1"
           style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
         >
-          Made by Raghvi
+          Made by <a href="https://www.raghvikabra.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">Raghvi</a>
         </span>
       </footer>
 
@@ -360,8 +360,8 @@ export default function ReceiverClient({ delivery }) {
         />
       )}
 
-      {/* Mailbox - positioned at ground line */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "28%" }}>
+      {/* Mailbox - positioned at ground level (bottom: 13% puts the post base at grass line) */}
+      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "13%" }}>
         <div 
           onClick={handleMailboxClick}
           className={`transition-all duration-200 ${stage === "ready" && !mailboxOpen ? "cursor-pointer" : ""}`}
@@ -435,7 +435,7 @@ export default function ReceiverClient({ delivery }) {
         @keyframes floatCloud1 { 0% { left: -200px; } 100% { left: 100vw; } }
         @keyframes floatCloud2 { 0% { left: -150px; } 100% { left: 100vw; } }
         @keyframes floatCloud3 { 0% { left: -100px; } 100% { left: 100vw; } }
-        @keyframes dropScroll { 0% { top: 38%; opacity: 1; } 100% { top: 48%; opacity: 0; } }
+        @keyframes dropScroll { 0% { top: 38%; opacity: 1; } 100% { top: 58%; opacity: 0; } }
         @keyframes mailboxWobble { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
         @keyframes mailboxPulse { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.02); filter: brightness(1.1); } }
         @keyframes revealPop { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
