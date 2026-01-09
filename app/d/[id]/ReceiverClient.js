@@ -223,15 +223,12 @@ export default function ReceiverClient({ delivery }) {
       
       {/* Footer */}
       <footer className="absolute bottom-0 left-0 right-0 z-40 py-2 text-center">
-        <a 
-          href="https://raghvi.co" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-white/70 text-xs hover:text-white transition-colors"
+        <span 
+          className="text-white/70 text-xs"
           style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.5)" }}
         >
-          Made with love by Raghvi
-        </a>
+          Made by Roogway 👾
+        </span>
       </footer>
 
       {/* Status */}
