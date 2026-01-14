@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { ITEM_SPRITES } from '@/lib/assets'
 
@@ -419,6 +419,8 @@ function HomeContent() {
 
 export default function HomePage() {
   return (
-    <HomeContent />
+    <Suspense fallback={<div className="min-h-screen bg-[#87CEEB]" />}>
+      <HomeContent />
+    </Suspense>
   )
 }
