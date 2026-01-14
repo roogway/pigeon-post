@@ -360,8 +360,8 @@ export default function ReceiverClient({ delivery }) {
         />
       )}
 
-      {/* Mailbox - positioned at ground level (bottom: 13% puts the post base at grass line) */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "13%" }}>
+      {/* Mailbox - positioned so post base sits at cloud/grass line */}
+      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "calc(24% - 4px)" }}>
         <div 
           onClick={handleMailboxClick}
           className={`transition-all duration-200 ${stage === "ready" && !mailboxOpen ? "cursor-pointer" : ""}`}
