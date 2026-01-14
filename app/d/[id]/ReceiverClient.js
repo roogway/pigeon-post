@@ -200,7 +200,7 @@ function MyMessagesWall({ onClose, messages }) {
             {messages.map((msg, index) => (
               <div 
                 key={index}
-                className="bg-white p-8 flex flex-col aspect-square"
+                className="bg-white p-5 flex flex-col aspect-square"
                 style={{ borderRadius: "16px" }}
               >
                 <p className="text-gray-800 mb-1" style={{ fontSize: "12px" }}>
