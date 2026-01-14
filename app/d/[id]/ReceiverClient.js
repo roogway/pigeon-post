@@ -157,7 +157,7 @@ function AboutModal({ onClose }) {
   )
 }
 
-// My Messages Wall - matching the sender side design exactly
+// My Messages Wall - with improved spacing, rounded corners, and larger text
 function MyMessagesWall({ onClose, messages }) {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -196,28 +196,28 @@ function MyMessagesWall({ onClose, messages }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
+          <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
             {messages.map((msg, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-sm p-2 flex flex-col"
-                style={{ aspectRatio: "1" }}
+                className="bg-white p-3 flex flex-col"
+                style={{ aspectRatio: "1", borderRadius: "24px" }}
               >
-                <p className="text-[10px] text-gray-800 font-medium mb-1">
+                <p className="text-gray-800 font-medium mb-2" style={{ fontSize: "20px" }}>
                   From: {msg.senderName || "Anonymous"}
                 </p>
                 <div className="flex-1 flex items-center justify-center">
                   <img 
                     src={ITEM_SPRITES[msg.itemId]}
                     alt={msg.itemName}
-                    className="w-12 h-12 object-contain"
+                    className="w-16 h-16 object-contain"
                     style={{ imageRendering: "pixelated" }}
                   />
                 </div>
                 {msg.note && (
-                  <div className="mt-1">
-                    <p className="text-[8px] text-gray-500">Message:</p>
-                    <p className="text-[9px] text-gray-700 leading-tight line-clamp-2">{msg.note}</p>
+                  <div className="mt-2">
+                    <p className="text-gray-500" style={{ fontSize: "14px" }}>Message:</p>
+                    <p className="text-gray-700 leading-tight line-clamp-2" style={{ fontSize: "16px" }}>{msg.note}</p>
                   </div>
                 )}
               </div>
