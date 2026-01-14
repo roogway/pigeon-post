@@ -193,6 +193,78 @@ function ShareModal({ link, onClose }) {
   )
 }
 
+// My Messages Wall - full page view
+function MyMessagesWall({ onClose, messages }) {
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      {/* Background */}
+      <div 
+        className="fixed inset-0"
+        style={{
+          backgroundImage: `url(${BACKGROUND})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
+          imageRendering: "pixelated"
+        }}
+      />
+      
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-3">
+        <button 
+          onClick={onClose}
+          className="text-white text-base hover:opacity-80 transition-opacity"
+          style={{ textShadow: "1px 1px 0 #000" }}
+        >
+          ← Back
+        </button>
+        <h1 className="text-lg text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
+          my pigeon post
+        </h1>
+        <div className="w-12"></div>
+      </header>
+      
+      {/* Grid Content */}
+      <div className="relative z-10 pt-16 pb-8 px-3">
+        {messages.length === 0 ? (
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <p className="text-white text-lg font-pixel text-center" style={{ textShadow: "1px 1px 0 #000" }}>
+              No messages yet!
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
+            {messages.map((msg, index) => (
+              <div 
+                key={index}
+                className="bg-white rounded-sm p-2 flex flex-col"
+                style={{ aspectRatio: "1" }}
+              >
+                <p className="text-[10px] text-gray-800 font-medium mb-1">
+                  From: {msg.senderName || "Anonymous"}
+                </p>
+                <div className="flex-1 flex items-center justify-center">
+                  <img 
+                    src={ITEM_SPRITES[msg.itemId]}
+                    alt={msg.itemName}
+                    className="w-12 h-12 object-contain"
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                </div>
+                {msg.note && (
+                  <div className="mt-1">
+                    <p className="text-[8px] text-gray-500">Message:</p>
+                    <p className="text-[9px] text-gray-700 leading-tight line-clamp-2">{msg.note}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // Separate component that uses useSearchParams
 function HomeContent() {
   const searchParams = useSearchParams()
@@ -204,6 +276,8 @@ function HomeContent() {
   const [showAbout, setShowAbout] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [shareLink, setShareLink] = useState(null)
+  const [showMyMessages, setShowMyMessages] = useState(false)
+  const [myMessages, setMyMessages] = useState([])
 
   // Load sender name from localStorage and check for "to" URL param
   useEffect(() => {
@@ -211,6 +285,16 @@ function HomeContent() {
     if (savedSenderName) {
       setSenderName(savedSenderName)
       setSenderNameSaved(true)
+    }
+    
+    // Load saved messages
+    const saved = localStorage.getItem('pigeonpost_received')
+    if (saved) {
+      try {
+        setMyMessages(JSON.parse(saved))
+      } catch (e) {
+        setMyMessages([])
+      }
     }
     
     // Check for ?to= param (from "Send something back")
@@ -288,13 +372,22 @@ function HomeContent() {
         <h1 className="text-xl text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
           Pigeon Post
         </h1>
-        <button 
-          onClick={() => setShowAbout(true)}
-          className="text-white text-base hover:opacity-80 transition-opacity"
-          style={{ textShadow: "1px 1px 0 #000" }}
-        >
-          About
-        </button>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => setShowMyMessages(true)}
+            className="text-white text-base hover:opacity-80 transition-opacity"
+            style={{ textShadow: "1px 1px 0 #000" }}
+          >
+            My Messages
+          </button>
+          <button 
+            onClick={() => setShowAbout(true)}
+            className="text-white text-base hover:opacity-80 transition-opacity"
+            style={{ textShadow: "1px 1px 0 #000" }}
+          >
+            About
+          </button>
+        </div>
       </header>
 
       {/* Footer */}
@@ -411,6 +504,7 @@ function HomeContent() {
       {/* Modals */}
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
       {shareLink && <ShareModal link={shareLink} onClose={handleCloseShare} />}
+      {showMyMessages && <MyMessagesWall onClose={() => setShowMyMessages(false)} messages={myMessages} />}
 
       <style jsx global>{`
         @keyframes floatCloud1 { 0% { left: -200px; } 100% { left: 100vw; } }
