@@ -57,7 +57,7 @@ export default async function DeliveryPage({ params }) {
     },
     recipientName: data.recipient_name,
     senderName: data.sender_name,
-    note: data.note,
+    message: data.note,
   }
 
   return <ReceiverClient delivery={delivery} />
