@@ -200,10 +200,10 @@ function MyMessagesWall({ onClose, messages }) {
             {messages.map((msg, index) => (
               <div 
                 key={index}
-                className="bg-white p-3 flex flex-col aspect-square"
-                style={{ borderRadius: "24px" }}
+                className="bg-white p-8 flex flex-col aspect-square"
+                style={{ borderRadius: "16px" }}
               >
-                <p className="text-gray-800 mb-1" style={{ fontSize: "16px" }}>
+                <p className="text-gray-800 mb-1" style={{ fontSize: "12px" }}>
                   From: {msg.senderName || "Anonymous"}
                 </p>
                 <div className="flex-1 flex items-center justify-center my-1">
@@ -215,8 +215,8 @@ function MyMessagesWall({ onClose, messages }) {
                   />
                 </div>
                 <div className="mt-1">
-                  <p className="text-gray-800" style={{ fontSize: "16px" }}>Message:</p>
-                  <p className="text-gray-800 leading-tight line-clamp-2" style={{ fontSize: "16px" }}>
+                  <p className="text-gray-800" style={{ fontSize: "12px" }}>Message:</p>
+                  <p className="text-gray-800 leading-tight line-clamp-2" style={{ fontSize: "12px" }}>
                     {msg.note || "–"}
                   </p>
                 </div>
