@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import { ITEM_SPRITES } from './itemSprites'
+import { ITEM_SPRITES } from '@/app/itemSprites'
 
 // About Modal Component
 function AboutModal({ onClose }) {
