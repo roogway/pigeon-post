@@ -385,7 +385,7 @@ export default function ReceiverClient({ delivery }) {
         </div>
       </div>
 
-      {/* Reveal Card - with recipient name */}
+      {/* Reveal Card - with recipient name and sender */}
       {mailboxOpen && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
           <div 
@@ -393,9 +393,16 @@ export default function ReceiverClient({ delivery }) {
             style={{ animation: "revealPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)" }}
           >
             {/* Recipient name at top */}
-            <h3 className="text-center text-lg font-bold text-gray-800 mb-3 font-pixel">
+            <h3 className="text-center text-lg font-bold text-gray-800 mb-1 font-pixel">
               For {delivery.recipientName}
             </h3>
+            
+            {/* Sender name */}
+            {delivery.senderName && (
+              <p className="text-center text-sm text-gray-500 mb-3">
+                from {delivery.senderName}
+              </p>
+            )}
             
             <div className="flex flex-col items-center mb-4">
               <div 
@@ -419,7 +426,7 @@ export default function ReceiverClient({ delivery }) {
             )}
             
             <a 
-              href="/"
+              href={delivery.senderName ? `/?to=${encodeURIComponent(delivery.senderName)}` : "/"}
               className="block w-full py-2.5 bg-orange-400 hover:bg-orange-300 text-white font-medium rounded-xl text-center transition-all shadow-md"
             >
               Send something back
