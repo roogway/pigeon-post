@@ -75,74 +75,31 @@ const FloatingClouds = () => (
 )
 
 const Confetti = ({ active }) => {
-  const [particles, setParticles] = useState([])
+  if (!active) return null
   
-  useEffect(() => {
-    if (active) {
-      const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#FFE66D', '#FF8B94', '#A8E6CF', '#DDA0DD', '#87CEEB']
-      const newParticles = Array.from({ length: 60 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        delay: Math.random() * 0.3,
-        duration: 2.5 + Math.random() * 1.5,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        size: 8 + Math.random() * 8,
-      }))
-      setParticles(newParticles)
-      const timer = setTimeout(() => setParticles([]), 4500)
-      return () => clearTimeout(timer)
-    }
-  }, [active])
-  
-  if (!active || particles.length === 0) return null
-  
+  const pieces = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    delay: `${Math.random() * 0.5}s`,
+    duration: `${2 + Math.random() * 2}s`,
+    color: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'][Math.floor(Math.random() * 8)]
+  }))
+
   return (
     <div className="fixed inset-0 pointer-events-none z-50">
-      {particles.map(p => (
+      {pieces.map(piece => (
         <div
-          key={p.id}
-          className="absolute"
+          key={piece.id}
+          className="absolute w-3 h-3"
           style={{
-            left: `${p.x}%`,
-            top: "-20px",
-            width: `${p.size}px`,
-            height: `${p.size}px`,
-            backgroundColor: p.color,
-            animation: `confettiFall ${p.duration}s ease-out ${p.delay}s forwards`
+            left: piece.left,
+            top: '-20px',
+            backgroundColor: piece.color,
+            animation: `confettiFall ${piece.duration} ease-out ${piece.delay} forwards`,
+            borderRadius: Math.random() > 0.5 ? '50%' : '2px'
           }}
         />
       ))}
-    </div>
-  )
-}
-
-const Pigeon = ({ frame, carrying }) => {
-  const frameMap = { 0: 'up', 1: 'down', 2: 'glide' }
-  const currentFrame = frameMap[frame] || 'glide'
-  
-  return (
-    <div className="relative w-full h-full">
-      <img 
-        src={PIGEON_FRAMES[currentFrame]}
-        alt="Pigeon"
-        className="w-full h-full object-contain"
-        style={{ imageRendering: "pixelated" }}
-      />
-      {carrying && (
-        <img 
-          src={SCROLL}
-          alt="Scroll"
-          className="absolute"
-          style={{
-            width: "100px",
-            height: "auto",
-            bottom: "-10px",
-            left: "50%",
-            transform: "translateX(-50%) rotate(-15deg)",
-            imageRendering: "pixelated"
-          }}
-        />
-      )}
     </div>
   )
 }
@@ -200,6 +157,70 @@ function AboutModal({ onClose }) {
   )
 }
 
+// My Pigeons Wall - full page view with background
+function MyPigeonsWall({ onClose, pigeons }) {
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      {/* Background - same as main app */}
+      <div 
+        className="fixed inset-0"
+        style={{
+          backgroundImage: `url(${BACKGROUND})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
+          imageRendering: "pixelated"
+        }}
+      />
+      
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-3">
+        <button 
+          onClick={onClose}
+          className="text-white text-base hover:opacity-80 transition-opacity"
+          style={{ textShadow: "1px 1px 0 #000" }}
+        >
+          ← Back
+        </button>
+        <h1 className="text-xl text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
+          my pigeon post
+        </h1>
+        <div className="w-12"></div>
+      </header>
+      
+      {/* Grid Content */}
+      <div className="relative z-10 pt-16 pb-8 px-4">
+        {pigeons.length === 0 ? (
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <p className="text-white text-lg font-pixel" style={{ textShadow: "1px 1px 0 #000" }}>
+              No pigeons received yet!
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-2 max-w-md mx-auto">
+            {pigeons.map((pigeon, index) => (
+              <div 
+                key={index}
+                className="aspect-square bg-gray-300 rounded-sm flex flex-col items-center justify-center p-2"
+              >
+                <img 
+                  src={ITEM_SPRITES[pigeon.itemId]}
+                  alt={pigeon.itemName}
+                  className="w-12 h-12 object-contain mb-1"
+                  style={{ imageRendering: "pixelated" }}
+                />
+                <p className="text-xs font-medium text-gray-700 text-center leading-tight">{pigeon.itemName}</p>
+                {pigeon.senderName && (
+                  <p className="text-[10px] text-gray-500 text-center">from {pigeon.senderName}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function ReceiverClient({ delivery }) {
   const [stage, setStage] = useState("waiting")
   const [mailboxOpen, setMailboxOpen] = useState(false)
@@ -210,6 +231,49 @@ export default function ReceiverClient({ delivery }) {
   const [mailboxWobble, setMailboxWobble] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [showAbout, setShowAbout] = useState(false)
+  const [showMyPigeons, setShowMyPigeons] = useState(false)
+  const [myPigeons, setMyPigeons] = useState([])
+
+  // Load saved pigeons from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('pigeonpost_received')
+    if (saved) {
+      try {
+        setMyPigeons(JSON.parse(saved))
+      } catch (e) {
+        setMyPigeons([])
+      }
+    }
+  }, [])
+
+  // Save current delivery to localStorage when mailbox opens
+  useEffect(() => {
+    if (mailboxOpen && delivery) {
+      const newPigeon = {
+        id: delivery.id,
+        itemId: delivery.item.id,
+        itemName: delivery.item.name,
+        senderName: delivery.senderName,
+        receivedAt: new Date().toISOString()
+      }
+      
+      // Get existing pigeons
+      const saved = localStorage.getItem('pigeonpost_received')
+      let pigeons = []
+      try {
+        pigeons = saved ? JSON.parse(saved) : []
+      } catch (e) {
+        pigeons = []
+      }
+      
+      // Only add if not already saved (check by id)
+      if (!pigeons.some(p => p.id === delivery.id)) {
+        pigeons.unshift(newPigeon) // Add to beginning
+        localStorage.setItem('pigeonpost_received', JSON.stringify(pigeons))
+        setMyPigeons(pigeons)
+      }
+    }
+  }, [mailboxOpen, delivery])
 
   useEffect(() => {
     if (["arriving", "departed"].includes(stage)) {
@@ -281,9 +345,9 @@ export default function ReceiverClient({ delivery }) {
           About
         </button>
       </header>
-      
+
       {/* Footer */}
-      <footer className="absolute bottom-0 left-0 right-0 z-40 pb-6 pt-2 px-4 flex flex-col items-center">
+      <footer className="absolute bottom-0 left-0 right-0 z-40 pb-6 flex flex-col items-center">
         <a 
           href="https://buymeacoffee.com/raghvikabra"
           target="_blank"
@@ -301,49 +365,57 @@ export default function ReceiverClient({ delivery }) {
         </span>
       </footer>
 
-      {/* Status */}
-      <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30">
-        <div className="bg-black/70 px-5 py-2 rounded-full">
-          <p className="text-white text-sm md:text-base">
-            {stage === "waiting" && "..."}
-            {stage === "arriving" && "A pigeon approaches"}
-            {stage === "hovering" && "Special delivery"}
-            {stage === "departed" && "..."}
-            {stage === "ready" && !mailboxOpen && "Tap the mailbox"}
-            {mailboxOpen && ""}
-          </p>
-        </div>
-      </div>
-
-      {/* Replay */}
+      {/* Tap Prompt */}
       {stage === "ready" && !mailboxOpen && (
-        <button
-          onClick={startAnimation}
-          className="absolute top-16 right-4 z-30 bg-white/80 w-9 h-9 rounded-full flex items-center justify-center hover:bg-white"
+        <div 
+          className="absolute top-16 left-0 right-0 z-30 flex justify-center"
+          style={{ animation: "fadeIn 0.5s ease-out" }}
         >
-          ↺
-        </button>
+          <div className="bg-gray-900/80 text-white px-5 py-2.5 rounded-full text-base font-medium">
+            Tap the mailbox
+          </div>
+        </div>
       )}
 
       {/* Pigeon */}
-      {!["ready", "waiting"].includes(stage) && (
+      {stage !== "waiting" && stage !== "ready" && (
         <div 
-          className="absolute z-20"
-          style={{ 
-            width: "160px",
-            height: "130px",
-            left: `${pigeonPos.x}%`, 
+          className="absolute z-20 transition-all duration-[1.5s] ease-in-out"
+          style={{
+            left: `${pigeonPos.x}%`,
             top: `${pigeonPos.y}%`,
-            transform: "translate(-50%, -50%)",
-            transition: stage === "arriving" ? "all 1.7s ease-out" : 
-                       stage === "departed" ? "all 1.3s ease-in" : "all 0.2s ease-out"
+            transform: "translate(-50%, -50%)"
           }}
         >
-          <Pigeon frame={pigeonFrame} carrying={isCarrying} />
+          <div className="relative">
+            <img 
+              src={PIGEON_FRAMES[pigeonFrame]}
+              alt="Carrier pigeon"
+              style={{ 
+                width: "120px", 
+                imageRendering: "pixelated",
+                transform: stage === "departed" ? "scaleX(-1)" : undefined
+              }}
+            />
+            {isCarrying && (
+              <img 
+                src={SCROLL}
+                alt="Scroll"
+                className="absolute"
+                style={{
+                  width: "35px",
+                  bottom: "-10px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  imageRendering: "pixelated"
+                }}
+              />
+            )}
+          </div>
         </div>
       )}
 
-      {/* Dropped scroll */}
+      {/* Dropped Scroll Animation */}
       {showDroppedScroll && (
         <img 
           src={SCROLL}
@@ -425,18 +497,32 @@ export default function ReceiverClient({ delivery }) {
               </div>
             )}
             
-            <a 
-              href={delivery.senderName ? `/?to=${encodeURIComponent(delivery.senderName)}` : "/"}
-              className="block w-full py-2.5 bg-orange-400 hover:bg-orange-300 text-white font-medium rounded-xl text-center transition-all shadow-md"
-            >
-              Send something back
-            </a>
+            <div className="space-y-2">
+              <a 
+                href={delivery.senderName ? `/?to=${encodeURIComponent(delivery.senderName)}` : "/"}
+                className="block w-full py-2.5 bg-orange-400 hover:bg-orange-300 text-white font-medium rounded-xl text-center transition-all shadow-md"
+              >
+                Send something back
+              </a>
+              
+              {myPigeons.length > 0 && (
+                <button
+                  onClick={() => setShowMyPigeons(true)}
+                  className="w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-xl text-center transition-all"
+                >
+                  My Pigeons ({myPigeons.length})
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
 
       {/* About Modal */}
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
+      
+      {/* My Pigeons Wall */}
+      {showMyPigeons && <MyPigeonsWall onClose={() => setShowMyPigeons(false)} pigeons={myPigeons} />}
 
       <style jsx global>{`
         @keyframes floatCloud1 { 0% { left: -200px; } 100% { left: 100vw; } }
@@ -449,6 +535,7 @@ export default function ReceiverClient({ delivery }) {
         @keyframes itemFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
         @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
         @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
       `}</style>
     </div>
   )
