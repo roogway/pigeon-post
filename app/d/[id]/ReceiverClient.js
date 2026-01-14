@@ -157,11 +157,11 @@ function AboutModal({ onClose }) {
   )
 }
 
-// My Pigeons Wall - full page view with background
-function MyPigeonsWall({ onClose, pigeons }) {
+// My Messages Wall - full page view with white cards
+function MyMessagesWall({ onClose, messages }) {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      {/* Background - same as main app */}
+      {/* Background */}
       <div 
         className="fixed inset-0"
         style={{
@@ -181,36 +181,44 @@ function MyPigeonsWall({ onClose, pigeons }) {
         >
           ← Back
         </button>
-        <h1 className="text-xl text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
+        <h1 className="text-lg text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
           my pigeon post
         </h1>
         <div className="w-12"></div>
       </header>
       
       {/* Grid Content */}
-      <div className="relative z-10 pt-16 pb-8 px-4">
-        {pigeons.length === 0 ? (
+      <div className="relative z-10 pt-16 pb-8 px-3">
+        {messages.length === 0 ? (
           <div className="flex items-center justify-center min-h-[60vh]">
-            <p className="text-white text-lg font-pixel" style={{ textShadow: "1px 1px 0 #000" }}>
-              No pigeons received yet!
+            <p className="text-white text-lg font-pixel text-center" style={{ textShadow: "1px 1px 0 #000" }}>
+              No messages yet!
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-2 max-w-md mx-auto">
-            {pigeons.map((pigeon, index) => (
+          <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
+            {messages.map((msg, index) => (
               <div 
                 key={index}
-                className="aspect-square bg-gray-300 rounded-sm flex flex-col items-center justify-center p-2"
+                className="bg-white rounded-sm p-2 flex flex-col"
+                style={{ aspectRatio: "1" }}
               >
-                <img 
-                  src={ITEM_SPRITES[pigeon.itemId]}
-                  alt={pigeon.itemName}
-                  className="w-12 h-12 object-contain mb-1"
-                  style={{ imageRendering: "pixelated" }}
-                />
-                <p className="text-xs font-medium text-gray-700 text-center leading-tight">{pigeon.itemName}</p>
-                {pigeon.senderName && (
-                  <p className="text-[10px] text-gray-500 text-center">from {pigeon.senderName}</p>
+                <p className="text-[10px] text-gray-800 font-medium mb-1">
+                  From: {msg.senderName || "Anonymous"}
+                </p>
+                <div className="flex-1 flex items-center justify-center">
+                  <img 
+                    src={ITEM_SPRITES[msg.itemId]}
+                    alt={msg.itemName}
+                    className="w-12 h-12 object-contain"
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                </div>
+                {msg.note && (
+                  <div className="mt-1">
+                    <p className="text-[8px] text-gray-500">Message:</p>
+                    <p className="text-[9px] text-gray-700 leading-tight line-clamp-2">{msg.note}</p>
+                  </div>
                 )}
               </div>
             ))}
@@ -231,17 +239,17 @@ export default function ReceiverClient({ delivery }) {
   const [mailboxWobble, setMailboxWobble] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [showAbout, setShowAbout] = useState(false)
-  const [showMyPigeons, setShowMyPigeons] = useState(false)
-  const [myPigeons, setMyPigeons] = useState([])
+  const [showMyMessages, setShowMyMessages] = useState(false)
+  const [myMessages, setMyMessages] = useState([])
 
-  // Load saved pigeons from localStorage
+  // Load saved messages from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('pigeonpost_received')
     if (saved) {
       try {
-        setMyPigeons(JSON.parse(saved))
+        setMyMessages(JSON.parse(saved))
       } catch (e) {
-        setMyPigeons([])
+        setMyMessages([])
       }
     }
   }, [])
@@ -249,32 +257,34 @@ export default function ReceiverClient({ delivery }) {
   // Save current delivery to localStorage when mailbox opens
   useEffect(() => {
     if (mailboxOpen && delivery) {
-      const newPigeon = {
+      const newMessage = {
         id: delivery.id,
         itemId: delivery.item.id,
         itemName: delivery.item.name,
         senderName: delivery.senderName,
+        note: delivery.note,
         receivedAt: new Date().toISOString()
       }
       
-      // Get existing pigeons
+      // Get existing messages
       const saved = localStorage.getItem('pigeonpost_received')
-      let pigeons = []
+      let messages = []
       try {
-        pigeons = saved ? JSON.parse(saved) : []
+        messages = saved ? JSON.parse(saved) : []
       } catch (e) {
-        pigeons = []
+        messages = []
       }
       
       // Only add if not already saved (check by id)
-      if (!pigeons.some(p => p.id === delivery.id)) {
-        pigeons.unshift(newPigeon) // Add to beginning
-        localStorage.setItem('pigeonpost_received', JSON.stringify(pigeons))
-        setMyPigeons(pigeons)
+      if (!messages.some(m => m.id === delivery.id)) {
+        messages.unshift(newMessage) // Add to beginning
+        localStorage.setItem('pigeonpost_received', JSON.stringify(messages))
+        setMyMessages(messages)
       }
     }
   }, [mailboxOpen, delivery])
 
+  // Pigeon wing animation
   useEffect(() => {
     if (["arriving", "departed"].includes(stage)) {
       const interval = setInterval(() => setPigeonFrame(f => f === 0 ? 1 : 0), 120)
@@ -337,13 +347,22 @@ export default function ReceiverClient({ delivery }) {
         <a href="/" className="text-xl text-white font-bold font-pixel hover:opacity-80 transition-opacity" style={{ textShadow: "2px 2px 0 #000" }}>
           Pigeon Post
         </a>
-        <button 
-          onClick={() => setShowAbout(true)}
-          className="text-white text-base hover:opacity-80 transition-opacity"
-          style={{ textShadow: "1px 1px 0 #000" }}
-        >
-          About
-        </button>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => setShowMyMessages(true)}
+            className="text-white text-base hover:opacity-80 transition-opacity"
+            style={{ textShadow: "1px 1px 0 #000" }}
+          >
+            My Messages
+          </button>
+          <button 
+            onClick={() => setShowAbout(true)}
+            className="text-white text-base hover:opacity-80 transition-opacity"
+            style={{ textShadow: "1px 1px 0 #000" }}
+          >
+            About
+          </button>
+        </div>
       </header>
 
       {/* Footer */}
@@ -377,7 +396,7 @@ export default function ReceiverClient({ delivery }) {
         </div>
       )}
 
-      {/* Pigeon */}
+      {/* Pigeon - using PIGEON_FRAMES for animation */}
       {stage !== "waiting" && stage !== "ready" && (
         <div 
           className="absolute z-20 transition-all duration-[1.5s] ease-in-out"
@@ -497,23 +516,12 @@ export default function ReceiverClient({ delivery }) {
               </div>
             )}
             
-            <div className="space-y-2">
-              <a 
-                href={delivery.senderName ? `/?to=${encodeURIComponent(delivery.senderName)}` : "/"}
-                className="block w-full py-2.5 bg-orange-400 hover:bg-orange-300 text-white font-medium rounded-xl text-center transition-all shadow-md"
-              >
-                Send something back
-              </a>
-              
-              {myPigeons.length > 0 && (
-                <button
-                  onClick={() => setShowMyPigeons(true)}
-                  className="w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium rounded-xl text-center transition-all"
-                >
-                  My Pigeons ({myPigeons.length})
-                </button>
-              )}
-            </div>
+            <a 
+              href={delivery.senderName ? `/?to=${encodeURIComponent(delivery.senderName)}` : "/"}
+              className="block w-full py-2.5 bg-orange-400 hover:bg-orange-300 text-white font-medium rounded-xl text-center transition-all shadow-md"
+            >
+              Send something back
+            </a>
           </div>
         </div>
       )}
@@ -521,8 +529,8 @@ export default function ReceiverClient({ delivery }) {
       {/* About Modal */}
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
       
-      {/* My Pigeons Wall */}
-      {showMyPigeons && <MyPigeonsWall onClose={() => setShowMyPigeons(false)} pigeons={myPigeons} />}
+      {/* My Messages Wall */}
+      {showMyMessages && <MyMessagesWall onClose={() => setShowMyMessages(false)} messages={myMessages} />}
 
       <style jsx global>{`
         @keyframes floatCloud1 { 0% { left: -200px; } 100% { left: 100vw; } }
