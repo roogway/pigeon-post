@@ -95,8 +95,7 @@ function MyPigeonsWall({ onClose, pigeons }) {
   )
 }
 
-export default function ReceiverClient({ deliveryId }) {
-  const [delivery, setDelivery] = useState(null)
+export default function ReceiverClient({ delivery }) {
   const [animationState, setAnimationState] = useState('idle')
   const [showAbout, setShowAbout] = useState(false)
   const [showMyPigeons, setShowMyPigeons] = useState(false)
@@ -105,10 +104,10 @@ export default function ReceiverClient({ deliveryId }) {
   const scrollRef = useRef(null)
 
   useEffect(() => {
-    if (deliveryId && delivery) {
+    if (delivery) {
       setAnimationState('flying')
     }
-  }, [deliveryId, delivery])
+  }, [delivery])
 
   useEffect(() => {
     // Load pigeons from localStorage
