@@ -193,7 +193,7 @@ function ShareModal({ link, onClose }) {
   )
 }
 
-// My Messages Wall - full page view
+// My Messages Wall - with square cards and 16px text (matches receiver)
 function MyMessagesWall({ onClose, messages }) {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -217,45 +217,58 @@ function MyMessagesWall({ onClose, messages }) {
         >
           ← Back
         </button>
-        <h1 className="text-lg text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
+        <h1
+          className="text-lg text-white font-bold font-pixel"
+          style={{ textShadow: "2px 2px 0 #000" }}
+        >
           my pigeon post
         </h1>
-        <div className="w-12"></div>
+        <div className="w-12" />
       </header>
       
       {/* Grid Content */}
       <div className="relative z-10 pt-16 pb-8 px-3">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center min-h-[60vh]">
-            <p className="text-white text-lg font-pixel text-center" style={{ textShadow: "1px 1px 0 #000" }}>
+            <p
+              className="text-white text-lg font-pixel text-center"
+              style={{ textShadow: "1px 1px 0 #000" }}
+            >
               No messages yet!
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
+          <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
             {messages.map((msg, index) => (
-              <div 
+              <div
                 key={index}
-                className="bg-white rounded-sm p-2 flex flex-col"
-                style={{ aspectRatio: "1" }}
+                className="bg-white p-4 flex flex-col aspect-square"
+                style={{ borderRadius: "16px" }}
               >
-                <p className="text-[10px] text-gray-800 font-medium mb-1">
+                <p className="text-gray-800 mb-1" style={{ fontSize: "12px" }}>
                   From: {msg.senderName || "Anonymous"}
                 </p>
-                <div className="flex-1 flex items-center justify-center">
-                  <img 
+
+                <div className="flex-1 flex items-center justify-center my-1">
+                  <img
                     src={ITEM_SPRITES[msg.itemId]}
                     alt={msg.itemName}
-                    className="w-12 h-12 object-contain"
+                    className="w-14 h-14 object-contain"
                     style={{ imageRendering: "pixelated" }}
                   />
                 </div>
-                {msg.note && (
-                  <div className="mt-1">
-                    <p className="text-[8px] text-gray-500">Message:</p>
-                    <p className="text-[9px] text-gray-700 leading-tight line-clamp-2">{msg.note}</p>
-                  </div>
-                )}
+
+                <div className="mt-1">
+                  <p className="text-gray-800" style={{ fontSize: "12px" }}>
+                    Message:
+                  </p>
+                  <p
+                    className="text-gray-800 leading-tight line-clamp-2"
+                    style={{ fontSize: "12px" }}
+                  >
+                    {msg.note || "–"}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -264,6 +277,7 @@ function MyMessagesWall({ onClose, messages }) {
     </div>
   )
 }
+
 
 // Separate component that uses useSearchParams
 function HomeContent() {
