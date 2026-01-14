@@ -157,7 +157,7 @@ function AboutModal({ onClose }) {
   )
 }
 
-// My Messages Wall - with equal text sizes, equal padding, and consistent grid
+// My Messages Wall - with square cards and 16px text
 function MyMessagesWall({ onClose, messages }) {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -200,23 +200,23 @@ function MyMessagesWall({ onClose, messages }) {
             {messages.map((msg, index) => (
               <div 
                 key={index}
-                className="bg-white p-4 flex flex-col"
-                style={{ aspectRatio: "1", borderRadius: "24px" }}
+                className="bg-white p-3 flex flex-col aspect-square"
+                style={{ borderRadius: "24px" }}
               >
-                <p className="text-gray-800 mb-2" style={{ fontSize: "20px" }}>
+                <p className="text-gray-800 mb-1" style={{ fontSize: "16px" }}>
                   From: {msg.senderName || "Anonymous"}
                 </p>
-                <div className="flex-1 flex items-center justify-center my-2">
+                <div className="flex-1 flex items-center justify-center my-1">
                   <img 
                     src={ITEM_SPRITES[msg.itemId]}
                     alt={msg.itemName}
-                    className="w-16 h-16 object-contain"
+                    className="w-14 h-14 object-contain"
                     style={{ imageRendering: "pixelated" }}
                   />
                 </div>
-                <div className="mt-2">
-                  <p className="text-gray-800" style={{ fontSize: "20px" }}>Message:</p>
-                  <p className="text-gray-800 leading-tight line-clamp-2" style={{ fontSize: "20px" }}>
+                <div className="mt-1">
+                  <p className="text-gray-800" style={{ fontSize: "16px" }}>Message:</p>
+                  <p className="text-gray-800 leading-tight line-clamp-2" style={{ fontSize: "16px" }}>
                     {msg.note || "–"}
                   </p>
                 </div>
