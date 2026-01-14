@@ -157,7 +157,7 @@ function AboutModal({ onClose }) {
   )
 }
 
-// My Messages Wall - with improved spacing, rounded corners, and larger text
+// My Messages Wall - with equal text sizes, equal padding, and consistent grid
 function MyMessagesWall({ onClose, messages }) {
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -200,13 +200,13 @@ function MyMessagesWall({ onClose, messages }) {
             {messages.map((msg, index) => (
               <div 
                 key={index}
-                className="bg-white p-3 flex flex-col"
+                className="bg-white p-4 flex flex-col"
                 style={{ aspectRatio: "1", borderRadius: "24px" }}
               >
-                <p className="text-gray-800 font-medium mb-2" style={{ fontSize: "20px" }}>
+                <p className="text-gray-800 mb-2" style={{ fontSize: "20px" }}>
                   From: {msg.senderName || "Anonymous"}
                 </p>
-                <div className="flex-1 flex items-center justify-center">
+                <div className="flex-1 flex items-center justify-center my-2">
                   <img 
                     src={ITEM_SPRITES[msg.itemId]}
                     alt={msg.itemName}
@@ -214,12 +214,12 @@ function MyMessagesWall({ onClose, messages }) {
                     style={{ imageRendering: "pixelated" }}
                   />
                 </div>
-                {msg.note && (
-                  <div className="mt-2">
-                    <p className="text-gray-500" style={{ fontSize: "14px" }}>Message:</p>
-                    <p className="text-gray-700 leading-tight line-clamp-2" style={{ fontSize: "16px" }}>{msg.note}</p>
-                  </div>
-                )}
+                <div className="mt-2">
+                  <p className="text-gray-800" style={{ fontSize: "20px" }}>Message:</p>
+                  <p className="text-gray-800 leading-tight line-clamp-2" style={{ fontSize: "20px" }}>
+                    {msg.note || "–"}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
