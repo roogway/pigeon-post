@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { 
   BACKGROUND, ITEM_SPRITES, ITEMS 
@@ -193,7 +193,8 @@ function ShareModal({ link, onClose }) {
   )
 }
 
-export default function Home() {
+// Separate component that uses useSearchParams
+function HomeContent() {
   const searchParams = useSearchParams()
   const [selectedItem, setSelectedItem] = useState(null)
   const [recipientName, setRecipientName] = useState("")
@@ -418,5 +419,18 @@ export default function Home() {
         @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
       `}</style>
     </div>
+  )
+}
+
+// Main export with Suspense wrapper
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-sky-400">
+        <div className="text-white font-pixel">Loading...</div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
   )
 }
