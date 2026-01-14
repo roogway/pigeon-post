@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { ITEM_SPRITES } from '@/lib/assets'
+import { BACKGROUND, ITEM_SPRITES } from '@/lib/assets'
 
 // About Modal
 function AboutModal({ onClose }) {
@@ -23,7 +23,7 @@ function AboutModal({ onClose }) {
   )
 }
 
-// My Messages Wall - with square cards and 16px text
+// My Messages Wall - with 12px font and p-4 padding
 function MyMessagesWall({ onClose, messages }) {
   return (
     <div className="fixed inset-0 z-50 bg-[#87CEEB] overflow-y-auto">
@@ -56,7 +56,7 @@ function MyMessagesWall({ onClose, messages }) {
           my messages
         </h1>
 
-        {/* Grid - with square cards and 12px text */}
+        {/* Grid - with 12px font and p-4 padding */}
         {messages.length === 0 ? (
           <p className="text-gray-500 text-center py-8" style={{ fontSize: '20px' }}>No messages sent yet!</p>
         ) : (
@@ -218,11 +218,14 @@ function HomeContent() {
 
   return (
     <div className="min-h-screen bg-[#87CEEB] relative overflow-hidden">
-      <img 
-        src="/background.png" 
-        alt="Background"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ imageRendering: 'pixelated' }}
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url(${BACKGROUND})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
+          imageRendering: "pixelated"
+        }}
       />
 
       <div className="relative z-10">
@@ -241,7 +244,7 @@ function HomeContent() {
                 className="text-gray-600 hover:text-gray-800 transition-colors font-medium"
                 style={{ fontFamily: '"Pixelify Sans", sans-serif', fontSize: '16px' }}
               >
-                My Messages ({myMessages.length})
+                My Messages
               </button>
             )}
             <button
