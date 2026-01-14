@@ -8,34 +8,33 @@ const supabase = createClient(
 
 export async function POST(request) {
   try {
-    const body = await request.json()
-    const { itemId, itemName, recipientName, note } = body
+    const { itemId, itemName, recipientName, senderName, note } = await request.json()
 
-    // Generate a short unique ID
+    if (!itemId || !itemName || !recipientName) {
+      return Response.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
     const id = nanoid(8)
 
-    // Insert into database
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('deliveries')
-      .insert([
-        {
-          id,
-          item_id: itemId,
-          item_name: itemName,
-          recipient_name: recipientName,
-          note: note || null,
-        }
-      ])
-      .select()
+      .insert({
+        id,
+        item_id: itemId,
+        item_name: itemName,
+        recipient_name: recipientName,
+        sender_name: senderName || null,
+        note: note || null,
+      })
 
     if (error) {
       console.error('Supabase error:', error)
       return Response.json({ error: 'Failed to create delivery' }, { status: 500 })
     }
 
-    return Response.json({ id, success: true })
+    return Response.json({ id })
   } catch (err) {
     console.error('API error:', err)
-    return Response.json({ error: 'Server error' }, { status: 500 })
+    return Response.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
