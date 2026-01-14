@@ -157,69 +157,68 @@ function AboutModal({ onClose }) {
   )
 }
 
-// My Pigeons Wall - with UI improvements: 24px rounded corners, 20pt body text, 40pt heading
-function MyPigeonsWall({ onClose, messages }) {
+// My Messages Wall - matching the sender side design exactly
+function MyMessagesWall({ onClose, messages }) {
   return (
-    <div className="fixed inset-0 z-50 bg-[#87CEEB] overflow-y-auto">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-      }}></div>
-
-      <div className="relative max-w-4xl mx-auto p-6">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <button 
-            onClick={onClose}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors font-medium"
-            style={{ fontFamily: '"Press Start 2P", monospace', fontSize: '14px' }}
-          >
-            ← Back
-          </button>
-        </div>
-
-        {/* Title - 40pt */}
-        <h1 
-          className="text-center mb-10 text-gray-800"
-          style={{ 
-            fontFamily: '"Press Start 2P", monospace', 
-            fontSize: '40px',
-            lineHeight: '1.4'
-          }}
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      {/* Background */}
+      <div 
+        className="fixed inset-0"
+        style={{
+          backgroundImage: `url(${BACKGROUND})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
+          imageRendering: "pixelated"
+        }}
+      />
+      
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 py-3">
+        <button 
+          onClick={onClose}
+          className="text-white text-base hover:opacity-80 transition-opacity"
+          style={{ textShadow: "1px 1px 0 #000" }}
         >
+          ← Back
+        </button>
+        <h1 className="text-lg text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
           my pigeon post
         </h1>
-
-        {/* Grid - with 24px rounded corners and 20pt text */}
+        <div className="w-12"></div>
+      </header>
+      
+      {/* Grid Content */}
+      <div className="relative z-10 pt-16 pb-8 px-3">
         {messages.length === 0 ? (
-          <p className="text-gray-500 text-center py-8" style={{ fontSize: '20px' }}>No pigeons received yet!</p>
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <p className="text-white text-lg font-pixel text-center" style={{ textShadow: "1px 1px 0 #000" }}>
+              No messages yet!
+            </p>
+          </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4 mb-32">
+          <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
             {messages.map((msg, index) => (
               <div 
                 key={index}
-                className="bg-gray-200 p-6 flex flex-col items-center justify-center aspect-square"
-                style={{ borderRadius: '24px' }}
+                className="bg-white rounded-sm p-2 flex flex-col"
+                style={{ aspectRatio: "1" }}
               >
-                <img 
-                  src={ITEM_SPRITES[msg.itemId]}
-                  alt={msg.itemName}
-                  className="w-20 h-20 object-contain mb-4"
-                  style={{ imageRendering: "pixelated" }}
-                />
-                <p 
-                  className="font-bold text-gray-800 text-center mb-2"
-                  style={{ fontSize: '20px' }}
-                >
-                  {msg.itemName}
+                <p className="text-[10px] text-gray-800 font-medium mb-1">
+                  From: {msg.senderName || "Anonymous"}
                 </p>
-                {msg.senderName && (
-                  <p 
-                    className="text-gray-500 text-center"
-                    style={{ fontSize: '16px' }}
-                  >
-                    from {msg.senderName}
-                  </p>
+                <div className="flex-1 flex items-center justify-center">
+                  <img 
+                    src={ITEM_SPRITES[msg.itemId]}
+                    alt={msg.itemName}
+                    className="w-12 h-12 object-contain"
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                </div>
+                {msg.note && (
+                  <div className="mt-1">
+                    <p className="text-[8px] text-gray-500">Message:</p>
+                    <p className="text-[9px] text-gray-700 leading-tight line-clamp-2">{msg.note}</p>
+                  </div>
                 )}
               </div>
             ))}
@@ -267,7 +266,6 @@ export default function ReceiverClient({ delivery }) {
         receivedAt: new Date().toISOString()
       }
       
-      // Get existing messages
       const saved = localStorage.getItem('pigeonpost_received')
       let messages = []
       try {
@@ -276,9 +274,8 @@ export default function ReceiverClient({ delivery }) {
         messages = []
       }
       
-      // Only add if not already saved (check by id)
       if (!messages.some(m => m.id === delivery.id)) {
-        messages.unshift(newMessage) // Add to beginning
+        messages.unshift(newMessage)
         localStorage.setItem('pigeonpost_received', JSON.stringify(messages))
         setMyMessages(messages)
       }
@@ -328,12 +325,10 @@ export default function ReceiverClient({ delivery }) {
     }
   }
 
-  // Get the correct pigeon frame image
   const getPigeonFrame = () => {
     if (Array.isArray(PIGEON_FRAMES)) {
       return PIGEON_FRAMES[pigeonFrame] || PIGEON_FRAMES[0]
     }
-    // If PIGEON_FRAMES is an object with keys like 'up', 'down', 'glide'
     const frameKeys = Object.keys(PIGEON_FRAMES)
     return PIGEON_FRAMES[frameKeys[pigeonFrame % frameKeys.length]]
   }
@@ -359,15 +354,13 @@ export default function ReceiverClient({ delivery }) {
           Pigeon Post
         </a>
         <div className="flex items-center gap-4">
-          {myMessages.length > 0 && (
-            <button 
-              onClick={() => setShowMyMessages(true)}
-              className="text-white text-base hover:opacity-80 transition-opacity"
-              style={{ textShadow: "1px 1px 0 #000" }}
-            >
-              My Pigeons ({myMessages.length})
-            </button>
-          )}
+          <button 
+            onClick={() => setShowMyMessages(true)}
+            className="text-white text-base hover:opacity-80 transition-opacity"
+            style={{ textShadow: "1px 1px 0 #000" }}
+          >
+            My Messages
+          </button>
           <button 
             onClick={() => setShowAbout(true)}
             className="text-white text-base hover:opacity-80 transition-opacity"
@@ -397,7 +390,6 @@ export default function ReceiverClient({ delivery }) {
         </span>
       </footer>
 
-      {/* Tap Prompt */}
       {stage === "ready" && !mailboxOpen && (
         <div 
           className="absolute top-16 left-0 right-0 z-30 flex justify-center"
@@ -409,7 +401,7 @@ export default function ReceiverClient({ delivery }) {
         </div>
       )}
 
-      {/* Pigeon - FIXED to properly show the sprite */}
+      {/* Pigeon - NO FLIP, same direction, BIGGER scroll */}
       {stage !== "waiting" && stage !== "ready" && (
         <div 
           className="absolute z-20 transition-all duration-[1.5s] ease-in-out"
@@ -426,8 +418,7 @@ export default function ReceiverClient({ delivery }) {
               style={{ 
                 width: "120px", 
                 height: "auto",
-                imageRendering: "pixelated",
-                transform: stage === "departed" ? "scaleX(-1)" : undefined
+                imageRendering: "pixelated"
               }}
             />
             {isCarrying && (
@@ -436,9 +427,9 @@ export default function ReceiverClient({ delivery }) {
                 alt="Scroll"
                 className="absolute"
                 style={{
-                  width: "35px",
+                  width: "80px",
                   height: "auto",
-                  bottom: "-10px",
+                  bottom: "-15px",
                   left: "50%",
                   transform: "translateX(-50%)",
                   imageRendering: "pixelated"
@@ -449,14 +440,13 @@ export default function ReceiverClient({ delivery }) {
         </div>
       )}
 
-      {/* Dropped Scroll Animation */}
       {showDroppedScroll && (
         <img 
           src={SCROLL}
           alt="Scroll"
           className="absolute"
           style={{
-            width: "110px",
+            width: "80px",
             left: "50%",
             transform: "translateX(-50%) rotate(-15deg)",
             imageRendering: "pixelated",
@@ -466,7 +456,6 @@ export default function ReceiverClient({ delivery }) {
         />
       )}
 
-      {/* Mailbox - positioned so post base sits at cloud/grass line */}
       <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "calc(24% - 88px)" }}>
         <div 
           onClick={handleMailboxClick}
@@ -491,19 +480,16 @@ export default function ReceiverClient({ delivery }) {
         </div>
       </div>
 
-      {/* Reveal Card - with recipient name and sender */}
       {mailboxOpen && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
           <div 
             className="bg-white rounded-2xl p-5 w-full max-w-sm shadow-2xl"
             style={{ animation: "revealPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)" }}
           >
-            {/* Recipient name at top */}
             <h3 className="text-center text-lg font-bold text-gray-800 mb-1 font-pixel">
               For {delivery.recipientName}
             </h3>
             
-            {/* Sender name */}
             {delivery.senderName && (
               <p className="text-center text-sm text-gray-500 mb-3">
                 from {delivery.senderName}
@@ -541,11 +527,8 @@ export default function ReceiverClient({ delivery }) {
         </div>
       )}
 
-      {/* About Modal */}
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
-      
-      {/* My Pigeons Wall */}
-      {showMyMessages && <MyPigeonsWall onClose={() => setShowMyMessages(false)} messages={myMessages} />}
+      {showMyMessages && <MyMessagesWall onClose={() => setShowMyMessages(false)} messages={myMessages} />}
 
       <style jsx global>{`
         @keyframes floatCloud1 { 0% { left: -200px; } 100% { left: 100vw; } }
