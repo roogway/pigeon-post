@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { 
   BACKGROUND, ITEM_SPRITES, ITEMS 
 } from '@/lib/assets'
@@ -193,12 +194,40 @@ function ShareModal({ link, onClose }) {
 }
 
 export default function Home() {
+  const searchParams = useSearchParams()
   const [selectedItem, setSelectedItem] = useState(null)
   const [recipientName, setRecipientName] = useState("")
+  const [senderName, setSenderName] = useState("")
+  const [senderNameSaved, setSenderNameSaved] = useState(false)
   const [note, setNote] = useState("")
   const [showAbout, setShowAbout] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [shareLink, setShareLink] = useState(null)
+
+  // Load sender name from localStorage and check for "to" URL param
+  useEffect(() => {
+    const savedSenderName = localStorage.getItem('pigeonpost_sender_name')
+    if (savedSenderName) {
+      setSenderName(savedSenderName)
+      setSenderNameSaved(true)
+    }
+    
+    // Check for ?to= param (from "Send something back")
+    const toParam = searchParams.get('to')
+    if (toParam) {
+      setRecipientName(toParam)
+    }
+  }, [searchParams])
+
+  // Save sender name to localStorage when it changes
+  const handleSenderNameChange = (e) => {
+    const name = e.target.value
+    setSenderName(name)
+    if (name.trim()) {
+      localStorage.setItem('pigeonpost_sender_name', name.trim())
+      setSenderNameSaved(true)
+    }
+  }
 
   const handleSend = async () => {
     if (!selectedItem || !recipientName.trim()) return
@@ -213,6 +242,7 @@ export default function Home() {
           itemId: selectedItem.id,
           itemName: selectedItem.name,
           recipientName: recipientName.trim(),
+          senderName: senderName.trim() || null,
           note: note.trim() || null,
         }),
       })
@@ -254,9 +284,9 @@ export default function Home() {
 
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-40 flex justify-between items-center px-4 py-3">
-        <a href="/" className="text-xl text-white font-bold font-pixel hover:opacity-80 transition-opacity" style={{ textShadow: "2px 2px 0 #000" }}>
+        <h1 className="text-xl text-white font-bold font-pixel" style={{ textShadow: "2px 2px 0 #000" }}>
           Pigeon Post
-        </a>
+        </h1>
         <button 
           onClick={() => setShowAbout(true)}
           className="text-white text-base hover:opacity-80 transition-opacity"
@@ -265,9 +295,9 @@ export default function Home() {
           About
         </button>
       </header>
-      
-      {/* Footer - centered, stacked */}
-      <footer className="absolute bottom-0 left-0 right-0 z-40 pb-6 pt-2 px-4 flex flex-col items-center">
+
+      {/* Footer */}
+      <footer className="absolute bottom-0 left-0 right-0 z-40 pb-6 flex flex-col items-center">
         <a 
           href="https://buymeacoffee.com/raghvikabra"
           target="_blank"
@@ -292,6 +322,23 @@ export default function Home() {
           <h2 className="text-lg font-bold text-center mb-3 text-gray-800 font-pixel">
             Send a little something
           </h2>
+          
+          {/* Your Name (Sender) */}
+          <div className="mb-3">
+            <label className="block text-sm text-gray-500 mb-1">
+              Your name {senderNameSaved && <span className="text-gray-400 text-xs">(saved ✓)</span>}
+            </label>
+            <input
+              type="text"
+              value={senderName}
+              onChange={handleSenderNameChange}
+              placeholder="Your name"
+              className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none transition-colors text-sm"
+            />
+            {!senderNameSaved && (
+              <p className="text-xs text-gray-400 mt-1">(you only need to write this once)</p>
+            )}
+          </div>
           
           {/* Recipient */}
           <div className="mb-3">
