@@ -189,11 +189,12 @@ export default function ReceiverClient({ delivery }) {
 
   return (
     <div className="relative w-full min-h-screen bg-[#87CEEB] overflow-hidden">
-      {/* Background image */}
+      {/* Background image - actual pixel art */}
       <img 
         src="/background.png" 
         alt="Sky background"
         className="absolute inset-0 w-full h-full object-cover"
+        style={{ imageRendering: 'pixelated' }}
       />
 
       {/* Floating clouds */}
@@ -219,16 +220,25 @@ export default function ReceiverClient({ delivery }) {
         </svg>
       </div>
 
-      {/* About button - top left */}
-      <button
-        onClick={() => setShowAbout(true)}
-        className="absolute top-6 left-6 z-20 text-gray-600 hover:text-gray-800 transition-colors"
-        style={{ fontFamily: '"Press Start 2P", monospace', fontSize: '14px' }}
-      >
-        ?
-      </button>
+      {/* Header Navigation */}
+      <header className="absolute top-0 left-0 right-0 z-20 px-6 py-4 flex items-center justify-between">
+        <a 
+          href="/" 
+          className="text-gray-800 hover:text-gray-600 transition-colors font-bold"
+          style={{ fontFamily: '"Pixelify Sans", sans-serif', fontSize: '20px' }}
+        >
+          Pigeon Post
+        </a>
+        <button
+          onClick={() => setShowAbout(true)}
+          className="text-gray-600 hover:text-gray-800 transition-colors font-medium"
+          style={{ fontFamily: '"Pixelify Sans", sans-serif', fontSize: '16px' }}
+        >
+          About
+        </button>
+      </header>
 
-      {/* Flying pigeon with scroll - LARGER SIZE */}
+      {/* Flying pigeon with scroll - using actual pixel art sprite */}
       {(animationState === 'flying' || animationState === 'dropping') && delivery && (
         <div
           ref={scrollRef}
@@ -243,30 +253,35 @@ export default function ReceiverClient({ delivery }) {
           }}
           onTransitionEnd={handleAnimationEnd}
         >
-          {/* Pigeon - BIGGER */}
+          {/* Pigeon - using actual sprite */}
           <div className="relative">
-            <div style={{ fontSize: '120px' }} className="animate-bounce">🕊️</div>
+            <img 
+              src="/P2.png" 
+              alt="Flying pigeon"
+              style={{ 
+                width: '120px', 
+                height: 'auto',
+                imageRendering: 'pixelated'
+              }}
+            />
             
             {/* Scroll attached to pigeon's feet */}
             <div className="absolute left-1/2 transform -translate-x-1/2" style={{ bottom: '-30px' }}>
-              <svg width="40" height="60" viewBox="0 0 40 60" style={{ imageRendering: 'pixelated' }}>
-                {/* Scroll tube */}
-                <rect x="8" y="10" width="24" height="45" fill="#F4E4C1" stroke="#8B7355" strokeWidth="2"/>
-                {/* Top cap */}
-                <ellipse cx="20" cy="10" rx="12" ry="4" fill="#D4C4A1"/>
-                {/* Bottom cap */}
-                <ellipse cx="20" cy="55" rx="12" ry="4" fill="#D4C4A1"/>
-                {/* Ribbon */}
-                <rect x="18" y="15" width="4" height="35" fill="#C41E3A"/>
-                {/* Wax seal */}
-                <circle cx="20" cy="30" r="6" fill="#8B0000"/>
-              </svg>
+              <img 
+                src="/scroll.png"
+                alt="Scroll"
+                style={{
+                  width: '40px',
+                  height: 'auto',
+                  imageRendering: 'pixelated'
+                }}
+              />
             </div>
           </div>
         </div>
       )}
 
-      {/* Mailbox - properly positioned on ground, smaller size */}
+      {/* Mailbox - using actual pixel art SVG, properly positioned on ground */}
       <div 
         ref={mailboxRef}
         className={`absolute left-1/2 transform -translate-x-1/2 ${
@@ -352,6 +367,28 @@ export default function ReceiverClient({ delivery }) {
       
       {/* My Pigeons Wall */}
       {showMyPigeons && <MyPigeonsWall onClose={() => setShowMyPigeons(false)} pigeons={myPigeons} />}
+
+      {/* Footer */}
+      <footer className="absolute bottom-0 left-0 right-0 z-10 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-600">
+        <a 
+          href="https://buymeacoffee.com/raghvikabra" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="hover:text-gray-800 transition-colors"
+          style={{ fontFamily: '"Pixelify Sans", sans-serif' }}
+        >
+          This pigeon runs on coffee ☕
+        </a>
+        <a 
+          href="https://www.raghvikabra.com" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="hover:text-gray-800 transition-colors"
+          style={{ fontFamily: '"Pixelify Sans", sans-serif' }}
+        >
+          Made by Raghvi 🛸
+        </a>
+      </footer>
 
       <style jsx global>{`
         @keyframes floatCloud1 { 0% { left: -200px; } 100% { left: 100vw; } }
