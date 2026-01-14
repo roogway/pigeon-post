@@ -56,6 +56,7 @@ export default async function DeliveryPage({ params }) {
       name: data.item_name,
     },
     recipientName: data.recipient_name,
+    senderName: data.sender_name,
     note: data.note,
   }
 
