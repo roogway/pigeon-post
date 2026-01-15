@@ -424,16 +424,16 @@ function HomeContent() {
       </footer>
 
       {/* Main Card - with bottom margin for footer space */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center px-4 pb-20">
-        <div className="bg-white rounded-2xl p-4 w-full max-w-sm shadow-2xl">
+      <div className="absolute inset-0 z-10 flex items-center justify-center px-4 pb-20 pt-14">
+        <div className="bg-white rounded-2xl p-3 md:p-4 w-full max-w-sm shadow-2xl">
           {/* Card Title */}
-          <h2 className="text-lg font-bold text-center mb-3 text-gray-800 font-pixel">
+          <h2 className="text-base md:text-lg font-bold text-center mb-2 md:mb-3 text-gray-800 font-pixel">
             Send a little something
           </h2>
           
           {/* Your Name (Sender) */}
-          <div className="mb-3">
-            <label className="block text-sm text-gray-500 mb-1">
+          <div className="mb-2 md:mb-3">
+            <label className="block text-xs md:text-sm text-gray-500 mb-1">
               Your name {senderNameSaved && <span className="text-gray-400 text-xs">(saved ✓)</span>}
             </label>
             <input
@@ -441,28 +441,28 @@ function HomeContent() {
               value={senderName}
               onChange={handleSenderNameChange}
               placeholder="Your name"
-              className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none transition-colors text-sm"
+              className="w-full px-2.5 md:px-3 py-1.5 md:py-2 border-2 border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none transition-colors text-xs md:text-sm"
             />
             {!senderNameSaved && (
-              <p className="text-xs text-gray-400 mt-1">(you only need to write this once)</p>
+              <p className="text-xs text-gray-400 mt-0.5">(you only need to write this once)</p>
             )}
           </div>
           
           {/* Recipient */}
-          <div className="mb-3">
-            <label className="block text-sm text-gray-500 mb-1">For</label>
+          <div className="mb-2 md:mb-3">
+            <label className="block text-xs md:text-sm text-gray-500 mb-1">For</label>
             <input
               type="text"
               value={recipientName}
               onChange={(e) => setRecipientName(e.target.value)}
               placeholder="Friend's name"
-              className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none transition-colors text-sm"
+              className="w-full px-2.5 md:px-3 py-1.5 md:py-2 border-2 border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none transition-colors text-xs md:text-sm"
             />
           </div>
 
           {/* Item Grid - 4x3 */}
-          <div className="mb-3">
-            <div className="grid grid-cols-4 gap-1.5">
+          <div className="mb-2 md:mb-3">
+            <div className="grid grid-cols-4 gap-1 md:gap-1.5">
               {ITEMS.map((item) => (
                 <button
                   key={item.id}
@@ -483,20 +483,20 @@ function HomeContent() {
               ))}
             </div>
             
-            <p className="text-center text-sm text-gray-500 mt-2 h-5 font-medium">
+            <p className="text-center text-xs md:text-sm text-gray-500 mt-1.5 md:mt-2 h-4 md:h-5 font-medium">
               {selectedItem ? selectedItem.name : ""}
             </p>
           </div>
 
           {/* Note */}
-          <div className="mb-3">
-            <label className="block text-sm text-gray-400 mb-1">Add a note (optional)</label>
+          <div className="mb-2 md:mb-3">
+            <label className="block text-xs md:text-sm text-gray-400 mb-1">Add a note (optional)</label>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="..."
               rows={2}
-              className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none resize-none text-sm transition-colors"
+              className="w-full px-2.5 md:px-3 py-1.5 md:py-2 border border-gray-200 rounded-xl focus:border-orange-300 focus:outline-none resize-none text-xs md:text-sm transition-colors"
             />
           </div>
 
@@ -504,7 +504,7 @@ function HomeContent() {
           <button
             onClick={handleSend}
             disabled={!selectedItem || !recipientName.trim() || isLoading}
-            className={`w-full py-2.5 rounded-xl font-medium transition-all ${
+            className={`w-full py-2 md:py-2.5 rounded-xl font-medium transition-all text-sm md:text-base ${
               selectedItem && recipientName.trim() && !isLoading
                 ? "bg-orange-400 hover:bg-orange-300 active:scale-95 text-white cursor-pointer shadow-md"
                 : "bg-gray-100 text-gray-300 cursor-not-allowed"
