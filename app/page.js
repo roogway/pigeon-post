@@ -76,48 +76,48 @@ const FloatingClouds = () => (
 
 function AboutModal({ onClose }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-16 md:items-center md:pt-0">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       <div 
-        className="relative bg-white rounded-2xl p-6 max-w-sm w-full max-h-[80vh] overflow-y-auto"
+        className="relative bg-white rounded-2xl p-5 max-w-sm w-full max-h-[calc(100vh-5rem)] md:max-h-[80vh] overflow-y-auto"
         style={{ animation: "modalPop 0.2s ease-out" }}
       >
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors text-lg"
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors text-lg"
         >
           ✕
         </button>
         
-        <h2 className="text-2xl font-bold mb-4 font-pixel">About Pigeon Post</h2>
+        <h2 className="text-xl md:text-2xl font-bold mb-3 font-pixel">About Pigeon Post</h2>
         
-        <p className="text-gray-600 text-base mb-4">
+        <p className="text-gray-600 text-sm md:text-base mb-3">
           Send tiny pixel gifts to your friends via carrier pigeon. A small, delightful ritual.
         </p>
         
-        <div className="border-t pt-4">
-          <h3 className="font-bold text-base mb-2">Credits</h3>
-          <ul className="text-sm text-gray-500 space-y-1">
+        <div className="border-t pt-3">
+          <h3 className="font-bold text-sm md:text-base mb-2">Credits</h3>
+          <ul className="text-xs md:text-sm text-gray-500 space-y-1">
             <li>Design and concept by Raghvi</li>
             <li>Illustrations from Adobe Stock</li>
           </ul>
         </div>
         
-        <div className="border-t mt-4 pt-4">
-          <p className="text-sm text-gray-400 text-center mb-3">
+        <div className="border-t mt-3 pt-3">
+          <p className="text-xs md:text-sm text-gray-400 text-center mb-2">
             Tip: Add to Home Screen for the best experience ✨
           </p>
         </div>
         
-        <div className="border-t mt-4 pt-4">
-          <p className="text-base text-gray-600 text-center mb-3">
+        <div className="border-t mt-3 pt-3">
+          <p className="text-sm md:text-base text-gray-600 text-center mb-2">
             This pigeon runs on coffee ☕
           </p>
           <a
             href="https://buymeacoffee.com/raghvikabra"
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full py-2.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-medium rounded-xl text-center transition-all text-base"
+            className="block w-full py-2 md:py-2.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-medium rounded-xl text-center transition-all text-sm md:text-base"
           >
             Buy me a coffee
           </a>
@@ -151,30 +151,30 @@ function ShareModal({ link, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-16 md:items-center md:pt-0">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       <div 
-        className="relative bg-white rounded-2xl p-6 max-w-sm w-full"
+        className="relative bg-white rounded-2xl p-5 max-w-sm w-full"
         style={{ animation: "modalPop 0.2s ease-out" }}
       >
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg"
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-lg"
         >
           ✕
         </button>
         
-        <h2 className="text-xl font-bold mb-2 text-center font-pixel">🐦 Ready to send!</h2>
-        <p className="text-gray-500 text-sm mb-4 text-center">Share this link with your friend</p>
+        <h2 className="text-lg md:text-xl font-bold mb-2 text-center font-pixel">🐦 Ready to send!</h2>
+        <p className="text-gray-500 text-xs md:text-sm mb-3 text-center">Share this link with your friend</p>
         
-        <div className="bg-gray-100 p-3 rounded-xl mb-4 break-all text-sm text-gray-700">
+        <div className="bg-gray-100 p-2.5 md:p-3 rounded-xl mb-3 break-all text-xs md:text-sm text-gray-700">
           {link}
         </div>
         
         <div className="space-y-2">
           <button 
             onClick={handleCopy}
-            className="w-full py-2.5 bg-orange-400 hover:bg-orange-300 text-white font-medium rounded-xl transition-all"
+            className="w-full py-2 md:py-2.5 bg-orange-400 hover:bg-orange-300 text-white font-medium rounded-xl transition-all text-sm md:text-base"
           >
             {copied ? "Copied! ✓" : "Copy link"}
           </button>
@@ -182,7 +182,7 @@ function ShareModal({ link, onClose }) {
           {typeof navigator !== 'undefined' && navigator.share && (
             <button 
               onClick={handleNativeShare}
-              className="w-full py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-xl transition-all"
+              className="w-full py-2 md:py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-xl transition-all text-sm md:text-base"
             >
               Share via...
             </button>
@@ -238,11 +238,11 @@ function MyMessagesWall({ onClose, messages }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-w-lg mx-auto">
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className="bg-white p-4 flex flex-col aspect-square"
+                className="bg-white p-3 md:p-4 flex flex-col aspect-square"
                 style={{ borderRadius: "16px" }}
               >
                 <p className="text-gray-800 mb-1" style={{ fontSize: "12px" }}>
