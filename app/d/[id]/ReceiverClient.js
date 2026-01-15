@@ -456,7 +456,7 @@ export default function ReceiverClient({ delivery }) {
         />
       )}
 
-      <div className="absolute left-1/2 -translate-x-1/2 z-10 bottom-[10%] md:bottom-[calc(24%-88px)]">
+      <div className="absolute left-1/2 -translate-x-1/2 z-10 bottom-[15%] md:bottom-[calc(24%-88px)]">
         <div 
           onClick={handleMailboxClick}
           className={`transition-all duration-200 ${stage === "ready" && !mailboxOpen ? "cursor-pointer" : ""}`}
