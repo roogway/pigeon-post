@@ -26,7 +26,7 @@ export const metadata = {
     siteName: 'Pigeon Post',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://pigeon-post-omega.vercel.app/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Pigeon Post - Send pixel gifts via carrier pigeon',
@@ -39,7 +39,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Pigeon Post',
     description: 'Someone sent you a pixel gift via carrier pigeon! 🐦',
-    images: ['/og-image.png'],
+    images: ['https://pigeon-post-omega.vercel.app/og-image.png'],
   },
 }
 
